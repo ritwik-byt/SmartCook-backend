@@ -12,6 +12,11 @@ app.use(cors());
 app.use(express.json());
 app.use('/recipes', recipeRoutes);
 
+// Root route for status check
+app.get('/', (req, res) => {
+  res.send('SmartCook backend is running!');
+});
+
 mongoose.connect(process.env.MONGO_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true
