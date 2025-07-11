@@ -1,0 +1,32 @@
+[
+  {
+    "title": "Fresh Salad",
+    "ingredients": "Lettuce, tomato, cucumber, onion, olive oil, lemon juice",
+    "instructions": "Chop vegetables, mix with dressing, and serve fresh.",
+    "image": "https://images.unsplash.com/photo-1568605114967-8130f3a36994?auto=format&fit=crop&w=800&q=80"
+  },
+  {
+    "title": "Chocolate Cake",
+    "ingredients": "Flour, cocoa powder, eggs, sugar, butter, baking powder",
+    "instructions": "Mix ingredients, bake at 180°C for 30 minutes, cool and serve.",
+    "image": "https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=800&q=80"
+  },
+  {
+    "title": "Creamy Pasta",
+    "ingredients": "Pasta, cream, garlic, cheese, olive oil, herbs",
+    "instructions": "Boil pasta, prepare cream sauce, mix together and garnish with herbs.",
+    "image": "https://images.unsplash.com/photo-1523986371872-9d3ba2e2f642?auto=format&fit=crop&w=800&q=80"
+  },
+  {
+    "title": "Classic Biryani",
+    "ingredients": "Basmati rice, chicken, yogurt, spices, onions, saffron",
+    "instructions": "Marinate chicken, cook rice, layer both with spices, and cook on low heat.",
+    "image": "https://images.unsplash.com/photo-1608754578231-b244af0b4363?auto=format&fit=crop&w=800&q=80"
+  },
+  {
+    "title": "Paneer Butter Masala",
+    "ingredients": "Paneer, butter, tomato, cream, spices",
+    "instructions": "Sauté spices, add tomato puree and cream, then add paneer cubes.",
+    "image": "https://images.unsplash.com/photo-1627308595229-7830a5c91f9f?auto=format&fit=crop&w=800&q=80"
+  }
+]
