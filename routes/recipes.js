@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const Recipe = require("../models/Recipe");
 
-// ✅ GET all recipes (with optional category)
+// ✅ GET /recipes - Fetch all recipes (with optional category)
 router.get("/", async (req, res) => {
   try {
     const { category } = req.query;
@@ -11,10 +11,10 @@ router.get("/", async (req, res) => {
     const recipes = await Recipe.find(query);
 
     const safeRecipes = recipes
-      .filter(recipe => recipe && recipe._id) // ✅ skip invalid or undefined
+      .filter(recipe => recipe && recipe._id) // ✅ skip any invalid documents
       .map(recipe => ({
         ...recipe._doc,
-        _id: recipe._id?.toString() || "", // ✅ no crash if missing
+        _id: recipe._id?.toString() || "", // ✅ safely convert ObjectId
       }));
 
     res.json(safeRecipes);
@@ -24,19 +24,23 @@ router.get("/", async (req, res) => {
   }
 });
 
-// ✅ POST /recipes - Add a recipe
+// ✅ POST /recipes - Add a new recipe
 router.post("/", async (req, res) => {
   try {
     const recipe = new Recipe(req.body);
     await recipe.save();
-    res.status(201).json(recipe);
+
+    res.status(201).json({
+      ...recipe._doc,
+      _id: recipe._id.toString(), // ✅ ensure _id is stringified on creation too
+    });
   } catch (err) {
     console.error("❌ Error adding recipe:", err);
     res.status(500).json({ error: err.message || "Failed to add recipe" });
   }
 });
 
-// ✅ GET /recipes/:id
+// ✅ GET /recipes/:id - Get a single recipe by ID
 router.get("/:id", async (req, res) => {
   try {
     const recipe = await Recipe.findById(req.params.id);
@@ -44,7 +48,7 @@ router.get("/:id", async (req, res) => {
 
     res.json({
       ...recipe._doc,
-      _id: recipe._id.toString()
+      _id: recipe._id.toString(), // ✅ safe conversion
     });
   } catch (err) {
     console.error("❌ Error fetching recipe by ID:", err);
