@@ -12,7 +12,7 @@ const RecipeSchema = new mongoose.Schema({
   author: { type: String, default: 'Unknown' },
   ingredients: { type: [String], required: true },
   instructions: { type: [String], required: true },
-  approved: { type: Boolean, default: false }
+  approved: { type: Boolean, default: false } // ✅ Not public until approved
 }, { timestamps: true });
 
 module.exports = mongoose.model('Recipe', RecipeSchema);

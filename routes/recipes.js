@@ -81,7 +81,7 @@ router.get("/:id", async (req, res) => {
   try {
     const { id } = req.params;
 
-    // ❗ Protect from invalid string like "pending" or "approved"
+    // ❗ Avoid treating static paths like 'pending' or 'approved' as IDs
     if (id === "pending" || id === "approved") {
       return res.status(400).json({ error: "Invalid recipe ID" });
     }
@@ -109,6 +109,34 @@ router.delete("/:id", async (req, res) => {
   } catch (err) {
     console.error("❌ Delete error:", err);
     res.status(500).json({ error: err.message || "Server error" });
+  }
+});
+
+// ✅ PATCH /recipes/:id/approve - Admin approves recipe
+router.patch("/:id/approve", async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const recipe = await Recipe.findByIdAndUpdate(
+      id,
+      { approved: true },
+      { new: true }
+    );
+
+    if (!recipe) {
+      return res.status(404).json({ error: "Recipe not found" });
+    }
+
+    res.json({
+      message: "Recipe approved successfully",
+      recipe: {
+        ...recipe._doc,
+        _id: recipe._id.toString(),
+      },
+    });
+  } catch (err) {
+    console.error("❌ Error approving recipe:", err.message);
+    res.status(500).json({ error: "Failed to approve recipe" });
   }
 });
 
