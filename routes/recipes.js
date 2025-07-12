@@ -7,10 +7,12 @@ router.get("/pending", async (req, res) => {
   try {
     const recipes = await Recipe.find({ approved: false });
     res.json(
-      recipes.map(r => ({
-        ...r._doc,
-        _id: r._id.toString(),
-      }))
+      recipes
+        .filter(r => r && r._id)
+        .map(r => ({
+          ...r._doc,
+          _id: r._id.toString(),
+        }))
     );
   } catch (err) {
     console.error("❌ Failed to fetch pending recipes:", err);
@@ -23,10 +25,12 @@ router.get("/approved", async (req, res) => {
   try {
     const recipes = await Recipe.find({ approved: true });
     res.json(
-      recipes.map(r => ({
-        ...r._doc,
-        _id: r._id.toString(),
-      }))
+      recipes
+        .filter(r => r && r._id)
+        .map(r => ({
+          ...r._doc,
+          _id: r._id.toString(),
+        }))
     );
   } catch (err) {
     console.error("❌ Failed to fetch approved recipes:", err);
@@ -77,7 +81,7 @@ router.get("/:id", async (req, res) => {
   try {
     const { id } = req.params;
 
-    // ❗ Protect from invalid string like "pending" being treated as ObjectId
+    // ❗ Protect from invalid string like "pending" or "approved"
     if (id === "pending" || id === "approved") {
       return res.status(400).json({ error: "Invalid recipe ID" });
     }
