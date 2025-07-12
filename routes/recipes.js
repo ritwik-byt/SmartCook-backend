@@ -38,25 +38,27 @@ router.get("/approved", async (req, res) => {
   }
 });
 
-// ✅ GET /recipes - Fetch all recipes (optionally filtered by category)
+// ✅ GET /recipes - Only fetch approved recipes (for users)
 router.get("/", async (req, res) => {
   try {
     const { category } = req.query;
-    const query = category ? { category } : {};
+
+    const query = { approved: true };
+    if (category) query.category = category;
 
     const recipes = await Recipe.find(query);
 
     const safeRecipes = recipes
-      .filter(recipe => recipe && recipe._id)
-      .map(recipe => ({
-        ...recipe._doc,
-        _id: recipe._id?.toString() || "",
+      .filter(r => r && r._id)
+      .map(r => ({
+        ...r._doc,
+        _id: r._id.toString(),
       }));
 
     res.json(safeRecipes);
   } catch (err) {
     console.error("❌ Failed to fetch recipes:", err);
-    res.status(500).json({ error: err.message || "Server error" });
+    res.status(500).json({ error: "Server error" });
   }
 });
 
@@ -81,7 +83,6 @@ router.get("/:id", async (req, res) => {
   try {
     const { id } = req.params;
 
-    // ❗ Avoid treating static paths like 'pending' or 'approved' as IDs
     if (id === "pending" || id === "approved") {
       return res.status(400).json({ error: "Invalid recipe ID" });
     }
